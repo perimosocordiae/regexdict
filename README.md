@@ -2,7 +2,8 @@
 *A normal Python dict, with sugar for regex searching over string keys.*
 
 **CJ Carey** - [perimosocordiae@github](https://github.com/perimosocordiae/)
-**Daryl Koopersmith** - [koop@github](https://github.com/koop/), [darylkoop.com](http://darylkoop.com)
+
+**Daryl Koopersmith** - [koop@github](https://github.com/koop/)
 
 ## Create a new regexdict
 
