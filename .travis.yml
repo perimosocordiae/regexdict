@@ -6,8 +6,6 @@ python:
   - "3.2"
   - "3.3"
   - "3.4"
-  - "pypy"
-  - "pypy3"
 install:
   - pip install unittest2
   - python setup.py install
