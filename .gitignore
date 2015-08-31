@@ -1,2 +1,4 @@
-regexdict.egg-info/
+*.egg-info/
 *.pyc
+dist/
+build/
