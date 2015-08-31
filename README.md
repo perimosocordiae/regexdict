@@ -1,6 +1,6 @@
 # regexdict
 
-[![PyPI version](https://badge.fury.io/py/regexdict.svg)](http://badge.fury.io/py/regexdict)
+[![PyPI version](https://badge.fury.io/py/Regex-Dict.svg)](http://badge.fury.io/py/Regex-Dict)
 [![Build Status](https://travis-ci.org/perimosocordiae/regexdict.svg?branch=master)](https://travis-ci.org/perimosocordiae/regexdict)
 
 *Python dicts with sugar for regular expression searches over keys.*
@@ -8,6 +8,12 @@
 **CJ Carey** - [perimosocordiae@github](https://github.com/perimosocordiae/)
 
 **Daryl Koopersmith** - [koop@github](https://github.com/koop/)
+
+## Install
+
+	pip install Regex-Dict
+
+Note that the PyPI package `regexdict` is **not** this package.
 
 ## Create a new regexdict
 

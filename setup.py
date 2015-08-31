@@ -2,7 +2,7 @@
 from setuptools import setup
 
 version = "0.1.0"
-setup(name='regexdict',
+setup(name='Regex-Dict',
       version=version,
       description='A dict with sugar for regex searching over string keys.',
       author='CJ Carey',
