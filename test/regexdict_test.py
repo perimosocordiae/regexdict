@@ -66,6 +66,25 @@ class TestRegexDict(unittest.TestCase):
     bad = re.compile('ba+d')
     self.assertNotIn(bad, redict)
 
+  def test_setitem(self):
+    redict = regexdict(self.base_dict)
+    # regular setitem
+    redict['grapple'] = 8
+    self.assertEqual(redict['grapple'], 8)
+    # regex setitem
+    redict[:'apple'] = 1
+    self.assertListEqual(sorted(redict[:'app']),
+                         [('applesauce', 1), ('grapple', 1), ('happily', 7)])
+
+  def test_delitem(self):
+    redict = regexdict(self.base_dict)
+    # regular delitem
+    del redict['grapple']
+    self.assertNotIn('grapple', redict)
+    # regex delitem
+    del redict[:'ily']
+    self.assertDictEqual(redict, dict(applesauce=10))
+
 
 if __name__ == '__main__':
   unittest.main()

@@ -1,22 +1,19 @@
-"""regexdict.py - Dictionary with support for regular expression searching
+"""regexdict.py - Dictionary with support for regular expression searching.
 
 CJ Carey - perimosocordiae@github
-Daryl Koopersmith - koop@github, darylkoop.com
+Daryl Koopersmith - koop@github
 """
 import re
 import sys
 from collections import namedtuple
 
-regex_type = type(re.compile(''))
 iterkeys = lambda seq: (k for k, v in seq)
 itervalues = lambda seq: (v for k, v in seq)
 if sys.version_info[0] == 2:
     keys = lambda seq: list(iterkeys(seq))
     values = lambda seq: list(itervalues(seq))
-    str_type = basestring
 else:
     keys, values = iterkeys, itervalues
-    str_type = str
 
 _RT = namedtuple('ReturnType', ('list', 'dict', 'keys', 'values',
                                 'iterkeys', 'itervalues'))
@@ -29,7 +26,7 @@ class regexdict(dict):
         return (k for k in self if _is_match(regex, k))
 
     def __contains__(self, key):
-        if not isinstance(key, regex_type):
+        if not hasattr(key, 'search'):
             return dict.__contains__(self, key)
         return any(True for _ in self.__filter_matches(key))
 
