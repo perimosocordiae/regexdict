@@ -1,14 +1,14 @@
-# regexdict.py
+# regexdict
 *A normal Python dict, with sugar for regex searching over string keys.*
 
-**CJ Carey** - [perimosocordiae@github](https://github.com/perimosocordiae/)  
+**CJ Carey** - [perimosocordiae@github](https://github.com/perimosocordiae/)
 **Daryl Koopersmith** - [koop@github](https://github.com/koop/), [darylkoop.com](http://darylkoop.com)
 
 ## Create a new regexdict
 
-	import regexdict as r
+	from regexdict import regexdict
 
-	redict = r.regexdict({
+	redict = regexdict({
 		'applesauce' : 10,
 		'grapple' : 7,
 		'happily' : 7
@@ -35,16 +35,13 @@ If you don't want to use the generator by default, specify another return type.
 We also recognize pre-compiled regexes.
 
 	import re
-	
+
 	app = re.compile('.app')
 	redict[:app]
-	
+
 	redict[ r.list :app] == redict[ r.list :'.app'] # True
 
 ## The `in` keyword
 The in keyword only recognizes compiled regexes and normal key values. No slice magic here, sorry!
 
 	app in redict # True
-
-
-	
