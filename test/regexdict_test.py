@@ -2,7 +2,7 @@ import unittest
 import re
 import types
 
-from regexdict import regexdict
+from regexdict import regexdict, return_types as rt
 
 
 class TestRegexDict(unittest.TestCase):
@@ -33,12 +33,19 @@ class TestRegexDict(unittest.TestCase):
     self.assertIsInstance(redict[:'.app'], types.GeneratorType)
     # List of (key, value) pairs
     self.assertIsInstance(redict[list:'.app'], list)
+    self.assertListEqual(redict[rt.list:'.app'], redict[list:'.app'])
     # Dict of results
     self.assertIsInstance(redict[dict:'.app'], dict)
-    # # Sequence of keys (a list in python 2, a generator in python 3)
-    # redict[r.keys :'.app']
-    # # Sequence of values (a list in python 2, a generator in python 3)
-    # redict[r.values :'.app']
+    self.assertDictEqual(redict[rt.dict:'.app'], redict[dict:'.app'])
+    # Sequence of keys (a list in python 2, a generator in python 3)
+    self.assertListEqual(sorted(redict[rt.keys:'.app']),
+                         ['grapple', 'happily'])
+    # Sequence of values (a list in python 2, a generator in python 3)
+    self.assertListEqual(sorted(redict[rt.values:'.app']), [7, 7])
+    # Generator of keys
+    self.assertIsInstance(redict[rt.iterkeys:'.app'], types.GeneratorType)
+    # Generator of values
+    self.assertIsInstance(redict[rt.itervalues:'.app'], types.GeneratorType)
 
   def test_re_compiled(self):
     redict = regexdict(self.base_dict)

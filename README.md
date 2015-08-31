@@ -9,26 +9,30 @@
 	from regexdict import regexdict
 
 	redict = regexdict({
-		'applesauce' : 10,
-		'grapple' : 7,
-		'happily' : 7
-	});
+		'applesauce': 10,
+		'grapple': 7,
+		'happily': 7
+	})
 
 ## Use a regex
 We use slice syntax as sugar: `redict[ (returnType) : regex ]`
 
-	redict[:'app']		# Matches everything
-	redict[:'.app']		# Matches 'grapple' and 'happily'
-	redict[:'apple']	# Matches 'applesauce' and 'grapple'
+	redict[:'app']    # Matches everything
+	redict[:'.app']   # Matches 'grapple' and 'happily'
+	redict[:'apple']  # Matches 'applesauce' and 'grapple'
 
 ## Specify the return type of the results
 If you don't want to use the generator by default, specify another return type.
 
-	redict[:'.app']				# Generator over (key, value) pairs
-	redict[ r.list :'.app'] 	# List of (key, value) pairs
-	redict[ r.dict :'.app'] 	# Dict of results
-	redict[ r.keys :'.app'] 	# Sequence of keys (a list in python 2, a generator in python 3)
-	redict[ r.values :'.app'] 	# Sequence of values (a list in python 2, a generator in python 3)
+	from regexdict import return_types as rt
+
+	redict[:'.app']               # Generator over (key, value) pairs
+	redict[list:'.app']           # List of (key, value) pairs
+	redict[dict:'.app']           # Dict of results
+	redict[rt.keys:'.app']        # Sequence of keys (list in python 2, generator in python 3)
+	redict[rt.values:'.app']      # Sequence of values (list in python 2, generator in python 3)
+	redict[rt.iterkeys:'.app']    # Generator of keys
+	redict[rt.itervalues:'.app']  # Generator of values
 
 
 ## Use compiled regexes
@@ -39,9 +43,10 @@ We also recognize pre-compiled regexes.
 	app = re.compile('.app')
 	redict[:app]
 
-	redict[ r.list :app] == redict[ r.list :'.app'] # True
+	redict[list:app] == redict[list:'.app']  # ==> True
 
-## The `in` keyword
-The in keyword only recognizes compiled regexes and normal key values. No slice magic here, sorry!
+## The `in` operator
+The `in` operator only recognizes compiled regexes and normal key values.
+No slice magic here, sorry!
 
-	app in redict # True
+	app in redict  # ==> True
