@@ -1,7 +1,7 @@
 import sys
 from collections import namedtuple
 
-if sys.version_info.major == 2:
+if sys.version_info[0] == 2:
   from regexdict import regexdict, keys, values, iterkeys, itervalues
 else:
   from .regexdict_py3k import regexdict, keys, values
