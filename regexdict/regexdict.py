@@ -49,7 +49,8 @@ class regexdict(dict):
         _, regex = _unslice(key)
         if regex is None:
             return dict.__delitem__(self, key)
-        for k in self.__filter_matches(regex):
+        # Force list to avoid mutation during iteration.
+        for k in list(self.__filter_matches(regex)):
             dict.__delitem__(self, k)
 
     # Python2 compatibility functions
