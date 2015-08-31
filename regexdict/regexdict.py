@@ -4,20 +4,6 @@ CJ Carey - perimosocordiae@github
 Daryl Koopersmith - koop@github
 """
 import re
-import sys
-from collections import namedtuple
-
-iterkeys = lambda seq: (k for k, v in seq)
-itervalues = lambda seq: (v for k, v in seq)
-if sys.version_info[0] == 2:
-    keys = lambda seq: list(iterkeys(seq))
-    values = lambda seq: list(itervalues(seq))
-else:
-    keys, values = iterkeys, itervalues
-
-_RT = namedtuple('ReturnType', ('list', 'dict', 'keys', 'values',
-                                'iterkeys', 'itervalues'))
-return_types = _RT(list, dict, keys, values, iterkeys, itervalues)
 
 
 class regexdict(dict):
@@ -31,22 +17,22 @@ class regexdict(dict):
         return any(True for _ in self.__filter_matches(key))
 
     def __getitem__(self, key):
-        rettype, regex = _unslice(key)
+        regex = _unslice(key)
         if regex is None:
             return dict.__getitem__(self, key)
         kv_iter = ((k, dict.__getitem__(self, k))
                    for k in self.__filter_matches(regex))
-        return rettype(kv_iter) if rettype else kv_iter
+        return kv_iter
 
     def __setitem__(self, key, value):
-        _, regex = _unslice(key)
+        regex = _unslice(key)
         if regex is None:
             return dict.__setitem__(self, key, value)
         for k in self.__filter_matches(regex):
             dict.__setitem__(self, k, value)
 
     def __delitem__(self, key):
-        _, regex = _unslice(key)
+        regex = _unslice(key)
         if regex is None:
             return dict.__delitem__(self, key)
         # Force list to avoid mutation during iteration.
@@ -65,10 +51,13 @@ class regexdict(dict):
 
 
 def _unslice(key):
-    if isinstance(key, slice):
-        # slices have the form ret_type:regex
-        return key.start, re.compile(key.stop)
-    return None, None
+    if not isinstance(key, slice):
+        return None
+    # slices have the form [:pattern:flags]
+    if key.start is not None:
+        raise ValueError('Regex sugar must have the form [:pattern:flags]')
+    flags = 0 if key.step is None else key.step
+    return re.compile(key.stop, flags=flags)
 
 
 def _is_match(regex, s):

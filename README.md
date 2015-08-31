@@ -1,11 +1,17 @@
 # regexdict
-*A normal Python dict, with sugar for regex searching over string keys.*
+
+[![PyPI version](https://badge.fury.io/py/bigO.svg)](http://badge.fury.io/py/bigO)
+[![Build Status](https://travis-ci.org/perimosocordiae/bigO.svg?branch=master)](https://travis-ci.org/perimosocordiae/bigO)
+
+*Python dicts with sugar for regular expression searches over keys.*
 
 **CJ Carey** - [perimosocordiae@github](https://github.com/perimosocordiae/)
 
 **Daryl Koopersmith** - [koop@github](https://github.com/koop/)
 
 ## Create a new regexdict
+
+The constructor has the same semantics as a regular Python dict.
 
 	from regexdict import regexdict
 
@@ -15,36 +21,27 @@
 		'happily': 7
 	})
 
+The resulting object behaves just like a normal dict,
+so long as you if you index it with non-slice keys.
+
 ## Use a regex
-We use slice syntax as sugar: `redict[ (returnType) : regex ]`
+Take advantage of the sugary slice syntax: `redict[:pattern:(flags)]`
 
-	redict[:'app']    # Matches everything
-	redict[:'.app']   # Matches 'grapple' and 'happily'
-	redict[:'apple']  # Matches 'applesauce' and 'grapple'
+	redict[:'app':]      # Matches everything
+	redict[:'.app':]     # Matches 'grapple' and 'happily'
+	redict[:'apple':]    # Matches 'applesauce' and 'grapple'
+	redict[:'HAP':re.I]  # Matches 'happily' due to case insensitivity flag
 
-## Specify the return type of the results
-If you don't want to use the generator by default, specify another return type.
+Regex slice queries return a (possibly empty) iterator of (key, value) pairs.
 
-	from regexdict import return_types as rt
-
-	redict[:'.app']               # Generator over (key, value) pairs
-	redict[list:'.app']           # List of (key, value) pairs
-	redict[dict:'.app']           # Dict of results
-	redict[rt.keys:'.app']        # Sequence of keys (list in python 2, generator in python 3)
-	redict[rt.values:'.app']      # Sequence of values (list in python 2, generator in python 3)
-	redict[rt.iterkeys:'.app']    # Generator of keys
-	redict[rt.itervalues:'.app']  # Generator of values
-
-
-## Use compiled regexes
-We also recognize pre-compiled regexes.
+Patterns may be strings or pre-compiled regex objects.
 
 	import re
-
 	app = re.compile('.app')
-	redict[:app]
 
-	redict[list:app] == redict[list:'.app']  # ==> True
+	# Same result as redict[:'.app':]
+	redict[:app:]
+
 
 ## The `in` operator
 The `in` operator only recognizes compiled regexes and normal key values.

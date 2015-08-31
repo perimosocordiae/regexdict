@@ -1,12 +1,10 @@
+import re
 try:
   import unittest2 as unittest
 except ImportError:
   import unittest
 
-import re
-import types
-
-from regexdict import regexdict, return_types as rt
+from regexdict import regexdict
 
 
 class TestRegexDict(unittest.TestCase):
@@ -24,37 +22,20 @@ class TestRegexDict(unittest.TestCase):
 
   def test_slice_syntax(self):
     redict = regexdict(self.base_dict)
-    self.assertListEqual(sorted(redict[:'app']),
+    self.assertListEqual(sorted(redict[:'app':]),
                          [('applesauce', 10), ('grapple', 7), ('happily', 7)])
-    self.assertListEqual(sorted(redict[:'.app']),
+    self.assertListEqual(sorted(redict[:'.app':]),
                          [('grapple', 7), ('happily', 7)])
-    self.assertListEqual(sorted(redict[:'apple']),
+    self.assertListEqual(sorted(redict[:'apple':]),
                          [('applesauce', 10), ('grapple', 7)])
-
-  def test_return_type(self):
-    redict = regexdict(self.base_dict)
-    # Generator over (key, value) pairs
-    self.assertIsInstance(redict[:'.app'], types.GeneratorType)
-    # List of (key, value) pairs
-    self.assertIsInstance(redict[list:'.app'], list)
-    self.assertListEqual(redict[rt.list:'.app'], redict[list:'.app'])
-    # Dict of results
-    self.assertIsInstance(redict[dict:'.app'], dict)
-    self.assertDictEqual(redict[rt.dict:'.app'], redict[dict:'.app'])
-    # Sequence of keys (a list in python 2, a generator in python 3)
-    self.assertListEqual(sorted(redict[rt.keys:'.app']),
-                         ['grapple', 'happily'])
-    # Sequence of values (a list in python 2, a generator in python 3)
-    self.assertListEqual(sorted(redict[rt.values:'.app']), [7, 7])
-    # Generator of keys
-    self.assertIsInstance(redict[rt.iterkeys:'.app'], types.GeneratorType)
-    # Generator of values
-    self.assertIsInstance(redict[rt.itervalues:'.app'], types.GeneratorType)
+    # Test flags in slice as well
+    self.assertListEqual(sorted(redict[:'.APP':re.I]),
+                         [('grapple', 7), ('happily', 7)])
 
   def test_re_compiled(self):
     redict = regexdict(self.base_dict)
     app = re.compile('.app')
-    self.assertListEqual(redict[list:app], redict[list:'.app'])
+    self.assertListEqual(sorted(redict[:app:]), sorted(redict[:'.app':]))
 
   def test_in_operator(self):
     redict = regexdict(self.base_dict)
@@ -72,8 +53,8 @@ class TestRegexDict(unittest.TestCase):
     redict['grapple'] = 8
     self.assertEqual(redict['grapple'], 8)
     # regex setitem
-    redict[:'apple'] = 1
-    self.assertListEqual(sorted(redict[:'app']),
+    redict[:'apple':] = 1
+    self.assertListEqual(sorted(redict[:'app':]),
                          [('applesauce', 1), ('grapple', 1), ('happily', 7)])
 
   def test_delitem(self):
@@ -82,7 +63,7 @@ class TestRegexDict(unittest.TestCase):
     del redict['grapple']
     self.assertNotIn('grapple', redict)
     # regex delitem
-    del redict[:'ily']
+    del redict[:'ily':]
     self.assertDictEqual(redict, dict(applesauce=10))
 
 
