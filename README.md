@@ -1,7 +1,7 @@
 # regexdict
 
-[![PyPI version](https://badge.fury.io/py/bigO.svg)](http://badge.fury.io/py/bigO)
-[![Build Status](https://travis-ci.org/perimosocordiae/bigO.svg?branch=master)](https://travis-ci.org/perimosocordiae/bigO)
+[![PyPI version](https://badge.fury.io/py/regexdict.svg)](http://badge.fury.io/py/regexdict)
+[![Build Status](https://travis-ci.org/perimosocordiae/regexdict.svg?branch=master)](https://travis-ci.org/perimosocordiae/regexdict)
 
 *Python dicts with sugar for regular expression searches over keys.*
 
